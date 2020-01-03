@@ -1,3 +1,3 @@
-<label>Add an item: <input #newItem></label>
-<button (click)="addToDo(newItem.value)">Add To Do</button>
+<label>Add an item: <input [(ngModel)]="newToDoTitle"></label>
+<button [disabled]="newToDoTitle.length === 0" (click)="addToDo()">Add To Do</button>
 <app-to-do *ngFor="let toDo of toDos" [toDo]="toDo" (toDoToggleEvent)="toDoToggled($event)"></app-to-do>

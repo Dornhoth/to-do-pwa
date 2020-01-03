@@ -9,6 +9,7 @@ import { ToDosService } from 'src/app/services/to-dos.service';
 })
 export class ToDoListComponent implements OnInit {
   toDos: ToDo[];
+  newToDoTitle = '';
 
   constructor(
     private toDosService: ToDosService,
@@ -22,7 +23,8 @@ export class ToDoListComponent implements OnInit {
     this.toDosService.toggleToDo(id);
   }
 
-  addToDo(title: string): void {
-    this.toDosService.addToDo(title);
+  addToDo(): void {
+    this.toDosService.addToDo(this.newToDoTitle);
+    this.newToDoTitle = '';
   }
 }
