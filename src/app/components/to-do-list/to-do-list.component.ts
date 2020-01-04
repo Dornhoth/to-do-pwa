@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToDo } from 'src/app/models/to-do';
 import { ToDosService } from 'src/app/services/to-dos.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-to-do-list',
@@ -8,7 +9,7 @@ import { ToDosService } from 'src/app/services/to-dos.service';
   styleUrls: ['./to-do-list.component.scss']
 })
 export class ToDoListComponent implements OnInit {
-  toDos: ToDo[];
+  toDos: Observable<ToDo[]>;
   newToDoTitle = '';
 
   constructor(
@@ -16,15 +17,19 @@ export class ToDoListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.toDos = this.toDosService.toDos;
+    this.toDos = this.toDosService.getToDos();
   }
 
-  toDoToggled(id: number): void {
-    this.toDosService.toggleToDo(id);
+  toDoToggled(toDo: ToDo): void {
+    this.toDosService.toggleToDo(toDo).subscribe(() => {
+      this.toDos = this.toDosService.getToDos();
+    });
   }
 
   addToDo(): void {
-    this.toDosService.addToDo(this.newToDoTitle);
-    this.newToDoTitle = '';
+    this.toDosService.addToDo(this.newToDoTitle).subscribe(() => {
+      this.newToDoTitle = '';
+      this.toDos = this.toDosService.getToDos();
+    });
   }
 }

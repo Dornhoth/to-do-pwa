@@ -8,9 +8,9 @@ import { ToDo } from 'src/app/models/to-do';
 })
 export class ToDoComponent {
   @Input() toDo: ToDo;
-  @Output() toDoToggleEvent = new EventEmitter<number>();
+  @Output() toDoToggleEvent = new EventEmitter<ToDo>();
 
   changeCheckbox(): void {
-    this.toDoToggleEvent.emit(this.toDo.id);
+    this.toDoToggleEvent.emit(this.toDo);
   }
 }

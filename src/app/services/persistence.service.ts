@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { openDB } from 'idb';
+import { Observable } from 'rxjs';
 
 const TO_DO_DB_NAME = 'toDoDB';
 const TO_DOS_STORE_NAME = 'ToDos';
@@ -8,13 +9,21 @@ const TO_DOS_STORE_NAME = 'ToDos';
   providedIn: 'root'
 })
 export class PersistenceService {
-  private peanooDB;
+  private toDoDB;
 
   async connect(): Promise<void> {
-    this.peanooDB = await openDB(TO_DO_DB_NAME, 2, {
+    this.toDoDB = await openDB(TO_DO_DB_NAME, 2, {
       upgrade(db) {
-        db.createObjectStore(TO_DOS_STORE_NAME, { keyPath: 'id' });
+        db.createObjectStore(TO_DOS_STORE_NAME, { keyPath: 'id', autoIncrement: true });
       },
     });
+  }
+
+  getAll(storeName: string): Observable<any> {
+    return this.toDoDB.getAll(storeName);
+  }
+
+  save(storeName: string, item: any): Observable<void> {
+    return this.toDoDB.put(storeName, item);
   }
 }

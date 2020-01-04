@@ -1,40 +1,35 @@
 import { Injectable } from '@angular/core';
 import { ToDo } from '../models/to-do';
+import { Observable, from } from 'rxjs';
+import { PersistenceService } from './persistence.service';
+
+const TO_DOS_STORE_NAME = 'ToDos';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToDosService {
-  public toDos: ToDo[] = [
-    {
-      id: 1,
-      title: 'Watch a movie',
-      done: false,
-    },
-    {
-      id: 2,
-      title: 'Workout',
-      done: false,
-    },
-    {
-      id: 3,
-      title: 'Cook',
-      done: true,
-    }
-  ];
-
-  toggleToDo(id: number): void {
-    const toDo = this.toDos.find(e => e.id === id);
-    if (toDo) {
-      toDo.done = !toDo.done;
-    }
+  constructor(
+    private persistenceService: PersistenceService,
+  ) {
+    this.getToDos();
   }
 
-  addToDo(title: string): void {
-    this.toDos.unshift({
-      id: this.toDos.length + 1,
+  getToDos(): Observable<ToDo[]> {
+    return this.persistenceService.getAll('ToDos');
+  }
+
+  toggleToDo(toDo: ToDo): Observable<void> {
+    return from(this.persistenceService.save(TO_DOS_STORE_NAME, {
+      ...toDo,
+      done: !toDo.done,
+    }));
+  }
+
+  addToDo(title: string): Observable<void> {
+    return from(this.persistenceService.save(TO_DOS_STORE_NAME, {
       title,
       done: false,
-    });
+    }));
   }
 }
