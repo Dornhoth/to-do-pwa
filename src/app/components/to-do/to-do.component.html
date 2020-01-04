@@ -1,4 +1,4 @@
-<div [ngClass]="{ done: toDo.done}">
+<div [ngClass]="{ done: toDo.done }">
     {{toDo.title}}
     <input type="checkbox" [checked]="toDo.done" (change)="changeCheckbox()">
 </div>
