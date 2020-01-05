@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { ToDoListComponent } from './components/to-do-list/to-do-list.component';
 import { ToDoComponent } from './components/to-do/to-do.component';
 import { PersistenceService } from './services/persistence.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,7 @@ import { PersistenceService } from './services/persistence.service';
   imports: [
     BrowserModule,
     FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [{
     provide: APP_INITIALIZER,
