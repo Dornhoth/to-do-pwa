@@ -3,7 +3,7 @@ import { openDB } from 'idb';
 import { Observable, from } from 'rxjs';
 
 const TO_DO_DB_NAME = 'toDoDB';
-const TO_DOS_STORE_NAME = 'ToDos';
+export const TO_DOS_STORE_NAME = 'ToDos';
 
 @Injectable({
   providedIn: 'root'
